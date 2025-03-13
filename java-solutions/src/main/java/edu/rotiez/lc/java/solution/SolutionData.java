@@ -1,10 +1,12 @@
 package edu.rotiez.lc.java.solution;
 
 import org.junit.jupiter.params.provider.Arguments;
+
 import java.util.stream.Stream;
+
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-public class SolutionSources {
+public class SolutionData {
 
     public static Stream<Arguments> equalPairs() {
         return Stream.of(

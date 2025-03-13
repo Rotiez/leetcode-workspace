@@ -10,7 +10,6 @@ class LeetCodeSolutionsAspect {
 
     private val checkedClasses = mutableSetOf<Class<*>>()
 
-    // 1. Измените pointcut, чтобы параметр аннотации был явно привязан
     @After("initialization((@edu.rotiez.lc.tools.annotation.LeetCodeSolutions *).new(..)) && this(target)")
     fun checkDuplicateProblemIds(joinPoint: JoinPoint, target: Any) {
         val clazz = target.javaClass
@@ -18,7 +17,6 @@ class LeetCodeSolutionsAspect {
         if (checkedClasses.contains(clazz)) return
         checkedClasses.add(clazz)
 
-        // 2. Проверка дубликатов остается без изменений
         val problemIds = clazz.declaredMethods
             .mapNotNull { it.getAnnotation(LeetCodeProblem::class.java)?.id }
 

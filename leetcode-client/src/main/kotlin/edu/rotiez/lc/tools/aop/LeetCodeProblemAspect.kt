@@ -1,6 +1,7 @@
 package edu.rotiez.lc.tools.aop
 
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem
+import edu.rotiez.lc.tools.annotation.LeetCodeSolutions
 import edu.rotiez.lc.tools.client.LeetCodeClient
 import mu.KotlinLogging
 import org.aspectj.lang.ProceedingJoinPoint
@@ -22,6 +23,11 @@ class LeetCodeProblemAspect {
     fun aroundAnnotatedMethod(joinPoint: ProceedingJoinPoint): Any? {
         val method = (joinPoint.signature as MethodSignature).method
         val annotation = method.getAnnotation(LeetCodeProblem::class.java)
+
+        val clazz = joinPoint.target.javaClass
+        val solutionsAnnotation = clazz.getAnnotation(LeetCodeSolutions::class.java)
+
+        if (solutionsAnnotation?.logInfo == false) return joinPoint.proceed()
 
         val problem = client.getProblem(annotation.id)
         log.info("\u001B[32mTitle:\u001B[0m ${problem.title}")
