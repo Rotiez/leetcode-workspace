@@ -7,8 +7,8 @@ import edu.rotiez.lc.tools.annotation.LeetCodeSolutions
 class Solution {
 
     @LeetCodeProblem(id = 1)
-    fun equalPairs(): Int {
-        return 1
+    fun example() {
+        println("Hello World")
     }
 
 }
