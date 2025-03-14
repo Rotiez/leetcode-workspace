@@ -66,4 +66,74 @@ public class Solution {
         return result.toString();
     }
 
+    @LeetCodeProblem(id = 735)
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+        int i = 0;
+
+        while (i < asteroids.length) {
+            if (stack.isEmpty()) {
+                stack.push(asteroids[i]);
+                i++;
+            } else {
+                var before = stack.peek();
+                var current = asteroids[i];
+
+                if (before > 0 == current > 0) { // если двигаются в одну сторону
+                    stack.push(current);
+                    i++;
+                } else if (current > 0) { // двигаются в разные, но текущий вправо, значит предыдущий - влево
+                    stack.push(current);
+                    i++;
+                } else if (current < 0) { // двигаются друг на друга
+                    var diff = before + current;
+
+                    if (diff > 0) { // предыдущий больше текущего
+                        i++;
+                    } else if (diff < 0) { // текущий больше предыдущего
+                        stack.pop();
+                    } else { // астероиды были равны
+                        stack.pop();
+                        i++;
+                    }
+                }
+            }
+        }
+
+        int size = stack.size();
+        int[] result = new int[size];
+
+        for (int j = 0; j < size; j++) {
+            result[j] = stack.get(j);
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 394)
+    public String decodeString(String s) {
+        StringBuilder tempNum = new StringBuilder();
+        StringBuilder tempStr = new StringBuilder();
+        Stack<Integer> stackNum = new Stack<>();
+        Stack<StringBuilder> stackStr = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '[') {
+                stackNum.push(Integer.parseInt(tempNum.toString()));
+                tempNum.setLength(0);
+                stackStr.push(tempStr);
+                tempStr = new StringBuilder();
+            } else if (c == ']') {
+                int repeat = stackNum.pop();
+                String current = tempStr.toString();
+                tempStr = stackStr.pop();
+                tempStr.append(current.repeat(Math.max(0, repeat)));
+            } else if (Character.isDigit(c)) {
+                tempNum.append(c);
+            } else {
+                tempStr.append(c);
+            }
+        }
+        return tempStr.toString();
+    }
 }
