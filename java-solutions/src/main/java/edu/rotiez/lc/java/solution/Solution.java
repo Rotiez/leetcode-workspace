@@ -1,10 +1,11 @@
 package edu.rotiez.lc.java.solution;
 
+import edu.rotiez.lc.java.structure.ListNode;
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
 import java.util.*;
 
-@LeetCodeSolutions
+@LeetCodeSolutions(logInfo = false)
 public class Solution {
 
     @LeetCodeProblem(id = 2529)
@@ -136,4 +137,94 @@ public class Solution {
         }
         return tempStr.toString();
     }
+
+    @LeetCodeProblem(id = 1768)
+    public String mergeAlternately(String word1, String word2) {
+        StringBuilder result = new StringBuilder();
+        var arr1 = word1.toCharArray();
+        var arr2 = word2.toCharArray();
+
+        var maxArr = Math.max(arr1.length, arr2.length);
+
+        for (int i = 0; i < maxArr; i++) {
+            if (i < arr1.length) {
+                result.append(arr1[i]);
+            }
+            if (i < arr2.length) {
+                result.append(arr2[i]);
+            }
+        }
+
+        return result.toString();
+    }
+
+    @LeetCodeProblem(id = 649)
+    public String predictPartyVictory(String senate) {
+        Queue<Integer> radiant = new LinkedList<>();
+        Queue<Integer> dire = new LinkedList<>();
+
+        for (int i = 0; i < senate.length(); i++) {
+            if (senate.charAt(i) == 'R') radiant.add(i);
+            else dire.add(i);
+        }
+
+        while (!radiant.isEmpty() && !dire.isEmpty()) {
+            int rIndex = radiant.poll();
+            int dIndex = dire.poll();
+
+            if (rIndex < dIndex)  radiant.add(rIndex + senate.length());
+            else dire.add(dIndex + senate.length());
+        }
+
+        return radiant.isEmpty() ? "Dire" : "Radiant";
+    }
+
+    @LeetCodeProblem(id = 2095)
+    public ListNode deleteMiddle(ListNode head) {
+        if (head == null || head.next == null) return null;
+        ListNode slow = head;
+        ListNode fast = head;
+        ListNode prev = null;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        prev.next = slow.next;
+
+        return head;
+    }
+
+    @LeetCodeProblem(id = 328)
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        boolean oddFlag = true;
+        ListNode odd = head;
+        ListNode oddHead = odd;
+        ListNode even = head.next;
+        ListNode evenHead = even;
+
+        ListNode current = head.next.next;
+
+        while (current != null) {
+            if (oddFlag) {
+                odd.next = current;
+                odd = odd.next;
+            } else {
+                even.next = current;
+                even = even.next;
+            }
+
+            oddFlag = !oddFlag;
+            current = current.next;
+        }
+
+        even.next = null;
+        odd.next = evenHead;
+
+        return oddHead;
+    }
+
 }
