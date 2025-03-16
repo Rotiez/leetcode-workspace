@@ -1,6 +1,7 @@
 package edu.rotiez.lc.java.solution;
 
 import edu.rotiez.lc.java.structure.ListNode;
+import edu.rotiez.lc.java.structure.TreeNode;
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
 import java.util.*;
@@ -225,6 +226,118 @@ public class Solution {
         odd.next = evenHead;
 
         return oddHead;
+    }
+
+    @LeetCodeProblem(id = 206)
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+
+    @LeetCodeProblem(id = 2130)
+    public int pairSum(ListNode head) {
+        int max = 0;
+        Stack<Integer> stack = new Stack<>();
+
+        ListNode curr = head;
+
+        while (curr != null) {
+            stack.push(curr.val);
+            curr = curr.next;
+        }
+
+        curr = head;
+        while (curr != null) {
+            var temp = stack.pop() + curr.val;
+            if (temp > max) max = temp;
+            curr = curr.next;
+        }
+
+        return max;
+    }
+
+    @LeetCodeProblem(id = 104)
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
+    @LeetCodeProblem(id = 872)
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        List<Integer> list1 = new ArrayList<>();
+        collectLeaves(root1, list1);
+
+        List<Integer> list2 = new ArrayList<>();
+        collectLeaves(root2, list2);
+
+        return list1.equals(list2);
+    }
+
+    private void collectLeaves(TreeNode node, List<Integer> leaves) {
+        if (node == null) return;
+
+        if (node.left == null && node.right == null) {
+            leaves.add(node.val);
+        }
+
+        collectLeaves(node.left, leaves);
+        collectLeaves(node.right, leaves);
+    }
+
+    @LeetCodeProblem(id = 1448)
+    public int goodNodes(TreeNode root) {
+        if (root == null) return 0;
+        return processNode(root.left, root.val) + processNode(root.right, root.val) + 1;
+    }
+
+    private int processNode(TreeNode node, int max) {
+        if (node == null) return 0;
+
+        var temp = 0;
+
+        if (max <= node.val) {
+            max = node.val;
+            temp += 1;
+        }
+
+        temp += processNode(node.left, max);
+        temp += processNode(node.right, max);
+
+        return temp;
+    }
+
+    @LeetCodeProblem(id = 437)
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) return 0;
+        var total = 0;
+
+        total += countFromPath(root, targetSum);
+
+        total += pathSum(root.left, targetSum);
+        total += pathSum(root.right, targetSum);
+
+        return total;
+    }
+
+    private int countFromPath(TreeNode root, long targetSum) {
+        if (root == null) return 0;
+        int tempCount = 0;
+
+        if (root.val == targetSum) tempCount++;
+
+        tempCount += countFromPath(root.left, targetSum - root.val);
+        tempCount += countFromPath(root.right, targetSum - root.val);
+
+        return tempCount;
     }
 
 }
