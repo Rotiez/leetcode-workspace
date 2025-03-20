@@ -340,4 +340,206 @@ public class Solution {
         return tempCount;
     }
 
+    @LeetCodeProblem(id = 199)
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            TreeNode tempNode = queue.peek();
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+
+                if (node != null) {
+                    tempNode = node;
+                    if (node.left != null) queue.add(node.left);
+                    if (node.right != null) queue.add(node.right);
+                }
+            }
+
+            result.add(tempNode.val);
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id= 1161)
+    public int maxLevelSum(TreeNode root) {
+        if (root == null) return 0;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        int maxSum = Integer.MIN_VALUE, minRow = 0, currentRow = 0;
+
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int rowSize = queue.size();
+            int rowSum = 0;
+            currentRow++;
+
+            for (int i = 0; i < rowSize; i++) {
+                TreeNode node = queue.poll();
+
+                if (node != null) {
+                    rowSum += node.val;
+                    if (node.left != null) queue.add(node.left);
+                    if (node.right != null) queue.add(node.right);
+                }
+            }
+
+            if (rowSum > maxSum) {
+                minRow = currentRow;
+                maxSum = rowSum;
+            }
+        }
+
+        return minRow;
+    }
+
+    @LeetCodeProblem(id = 700)
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null) return null;
+        if (root.val == val) return root;
+        if (root.val > val) return searchBST(root.left, val);
+        return searchBST(root.right, val);
+    }
+
+    @LeetCodeProblem(id = 450)
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
+
+        if (key < root.val) root.left = deleteNode(root.left, key);
+        else if (key > root.val) root.right = deleteNode(root.right, key);
+        else {
+            if (root.left == null && root.right == null) return null;
+
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            TreeNode successor = findMin(root.right);
+            root.val = successor.val;
+            root.right = deleteNode(root.right, successor.val);
+        }
+
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode node) {
+        while (node.left != null) node = node.left;
+        return node;
+    }
+
+    @LeetCodeProblem(id = 841)
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        int n = rooms.size();
+        boolean[] visited = new boolean[n];
+        Queue<Integer> queue = new LinkedList<>();
+
+        visited[0] = true;
+        queue.add(0);
+
+        while (!queue.isEmpty()) {
+            int currentRoom = queue.poll();
+            for (int key : rooms.get(currentRoom)) {
+                if (!visited[key]) {
+                    visited[key] = true;
+                    queue.add(key);
+                }
+            }
+        }
+
+        for (boolean roomVisited : visited) {
+            if (!roomVisited) return false;
+        }
+        return true;
+    }
+
+    @LeetCodeProblem(id = 443)
+    public int compress(char[] chars) {
+        int ans = 0;
+
+        for (int i = 0; i < chars.length;) {
+            final char letter = chars[i];
+            int count = 0;
+
+            while (i < chars.length && chars[i] == letter) {
+                count++;
+                i++;
+            }
+
+            chars[ans++] = letter;
+
+            if (count > 1) {
+                for (final char c : String.valueOf(count).toCharArray()) {
+                    chars[ans++] = c;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    @LeetCodeProblem(id = 1004)
+    public int longestOnes(int[] nums, int k) {
+        int left = 0, right = 0, zeroCount = 0;
+
+        while (right < nums.length) {
+            if (nums[right] == 0) zeroCount++;
+            right++;
+            if (zeroCount > k) {
+                if (nums[left] == 0) zeroCount--;
+                left++;
+            }
+        }
+
+        return right - left;
+    }
+
+    @LeetCodeProblem(id = 1493)
+    public int longestSubarray(int[] nums) {
+        int left = 0, right = 0, zeroCount = 0;
+
+        while (right < nums.length) {
+            if (nums[right] == 0) zeroCount++;
+            right++;
+            if (zeroCount > 1) {
+                if (nums[left] == 0) zeroCount--;
+                left++;
+            }
+        }
+
+        return right - left - 1;
+    }
+
+    @LeetCodeProblem(id = 2352)
+    public int equalPairss(int[][] grid) {
+        Map<List<Integer>, Integer> rowCounts = new HashMap<>();
+
+        for (int i = 0; i < grid.length; i++) {
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j < grid[i].length; j++) {
+                row.add(grid[i][j]);
+            }
+            rowCounts.put(row, rowCounts.getOrDefault(row, 0) + 1);
+        }
+
+        int count = 0;
+
+        for (int j = 0; j < grid[0].length; j++) {
+            List<Integer> column = new ArrayList<>();
+            for (int i = 0; i < grid.length; i++) {
+                column.add(grid[i][j]);
+            }
+            if (rowCounts.containsKey(column)) {
+                count += rowCounts.get(column);
+            }
+        }
+
+        return count;
+    }
 }
