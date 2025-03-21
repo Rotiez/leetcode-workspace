@@ -613,4 +613,11 @@ public class Solution {
         }
         return result;
     }
+
+    @LeetCodeProblem(id = 136)
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int num : nums) result ^= num;
+        return result;
+    }
 }
