@@ -542,4 +542,75 @@ public class Solution {
 
         return count;
     }
+
+    @LeetCodeProblem(id = 236)
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) return null;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) return root;
+        return left != null ? left : right;
+    }
+
+    @LeetCodeProblem(id = 374)
+    public int guessNumber(int n) {
+        int left = 0, right = n;
+
+        while (left <= right) {
+            var mid = left + (right - left) / 2;
+            var result = guess(mid);
+
+            if (result == -1) {
+                right = mid - 1;
+            } else if (result == 1) {
+                left = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        return -1;
+    }
+
+    private int guess(int n) {
+        Random rdm = new Random();
+        return rdm.nextInt(n);
+    }
+
+    @LeetCodeProblem(id = 2300)
+    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int[] result = new int[spells.length];
+        Arrays.sort(potions);
+
+        for (int i = 0; i < spells.length; i++) {
+            int currSpell = spells[i];
+            int leftIdx = 0, rightIdx = potions.length - 1;
+            int potionsCount = 0;
+
+            while (leftIdx <= rightIdx) {
+                int midIdx = leftIdx + (rightIdx - leftIdx) / 2;
+                long product = (long) potions[midIdx] * currSpell;
+
+                if (product >= success) {
+                    potionsCount = potions.length - midIdx;
+                    rightIdx = midIdx - 1;
+                } else {
+                    leftIdx = midIdx + 1;
+                }
+            }
+
+            result[i] = potionsCount;
+        }
+        return result;
+    }
+
+    @LeetCodeProblem(id = 338)
+    public int[] countBits(int n) {
+        int[] result = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            result[i] = Integer.bitCount(i);
+        }
+        return result;
+    }
 }
