@@ -620,4 +620,160 @@ public class Solution {
         for (int num : nums) result ^= num;
         return result;
     }
+
+    @LeetCodeProblem(id = 17)
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.isEmpty()) return result;
+
+        final Map<Character, List<String>> strMap = new HashMap<>() {{
+            put('2', List.of("a", "b", "c"));
+            put('3', List.of("d", "e", "f"));
+            put('4', List.of("g", "h", "i"));
+            put('5', List.of("j", "k", "l"));
+            put('6', List.of("m", "n", "o"));
+            put('7', List.of("p", "q", "r", "s"));
+            put('8', List.of("t", "u", "v"));
+            put('9', List.of("w", "x", "y", "z"));
+        }};
+
+        backtrack(digits, 0, new StringBuilder(), result, strMap);
+
+        return result;
+    }
+
+    private void backtrack(String digits, int idx, StringBuilder sb, List<String> result, Map<Character, List<String>> strMap) {
+        if (idx == digits.length()) {
+            result.add(sb.toString());
+            return;
+        }
+
+        List<String> letters = strMap.get(digits.charAt(idx));
+        for (String letter : letters) {
+            sb.append(letter);
+            backtrack(digits, idx + 1, sb, result, strMap);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    @LeetCodeProblem(id = 739)
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] result = new int[n];
+        Arrays.fill(result, 0);
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+                int index = stack.pop();
+                result[index] = i - index;
+            }
+            stack.push(i);
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 111)
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        int depth = 1;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (node.left == null && node.right == null) return depth;
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+                depth++;
+            }
+        }
+
+        return depth;
+    }
+
+    @LeetCodeProblem(id = 94)
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+        List<Integer> result = new ArrayList<>();
+
+        result.addAll(inorderTraversal(root.left));
+        result.add(root.val);
+        result.addAll(inorderTraversal(root.right));
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 203)
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return null;
+
+        ListNode newHead = new ListNode();
+        ListNode cur = newHead;
+
+        while (head != null) {
+            if (head.val != val) {
+                cur.next = new ListNode(head.val);
+                cur = cur.next;
+            }
+            head = head.next;
+        }
+        return newHead.next;
+    }
+
+    @LeetCodeProblem(id = 414)
+    public static int thirdMax(int[] nums) {
+        Set<Integer> s = new HashSet<>();
+        for (int n : nums) s.add(n);
+
+        if (s.size() < 3) return Collections.max(s);
+
+        s.remove(Collections.max(s));
+        s.remove(Collections.max(s));
+
+        return Collections.max(s);
+    }
+
+    @LeetCodeProblem(id = 637)
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            long sum = 0;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+
+            result.add((double) sum / size);
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 215)
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        int result = Integer.MIN_VALUE;
+
+        for (int n : nums) pq.add(n);
+        for (int i = 0; i < k; i++) result = pq.poll();
+
+        return result;
+    }
 }
