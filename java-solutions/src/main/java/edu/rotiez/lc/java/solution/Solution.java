@@ -776,4 +776,19 @@ public class Solution {
 
         return result;
     }
+
+    @LeetCodeProblem(id = 657)
+    public boolean judgeCircle(String moves) {
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (char c : moves.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        return
+                (Objects.equals(map.getOrDefault('R', 0), map.getOrDefault('L', 0))
+                && Objects.equals(map.getOrDefault('U', 0), map.getOrDefault('D', 0)));
+    }
+
+
 }
