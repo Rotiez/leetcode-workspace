@@ -2,8 +2,6 @@
 
 # Personal LeetCode workspace
 
----
-
 This is a personal workspace for solving leetcode problems in Java and Kotlin languages.
 
 > The project contains a module ```leetcode-client``` that provides configured client and tools 
