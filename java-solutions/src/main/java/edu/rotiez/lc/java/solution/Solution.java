@@ -6,6 +6,9 @@ import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
 import java.util.*;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.min;
+
 @LeetCodeSolutions(logInfo = false)
 public class Solution {
 
@@ -790,5 +793,113 @@ public class Solution {
                 && Objects.equals(map.getOrDefault('U', 0), map.getOrDefault('D', 0)));
     }
 
+    @LeetCodeProblem(id = 821)
+    public int[] shortestToChar(String s, char c) {
+        int[] result = new int[s.length()];
+
+        for (int i = 0; i < s.length(); i++) {
+            int nextIdx = Integer.MAX_VALUE;
+            int prevIdx = Integer.MAX_VALUE;
+
+            for (int j = i; j < s.length(); j++) {
+                if (s.charAt(j) == c) {
+                    nextIdx = j;
+                    break;
+                }
+            }
+            for (int k = i; k >= 0; k--) {
+                if (s.charAt(k) == c) {
+                    prevIdx = k;
+                    break;
+                }
+            }
+
+            result[i] = min(abs(i - prevIdx), abs(nextIdx - i));
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 876)
+    public ListNode middleNode(ListNode head) {
+        int length = 0;
+        var node = head;
+
+        while (node != null) {
+            length++;
+            node = node.next;
+        }
+
+        for (int i = 0; i < length / 2; i++) {
+            head = head.next;
+        }
+
+        return head;
+    }
+
+    @LeetCodeProblem(id = 944)
+    public int minDeletionSize(String[] strs) {
+        int result = 0;
+
+        for (int i = 0; i < strs[0].length(); i++) {
+            char prev = 'a';
+
+            for (String s : strs) {
+                if (prev > s.charAt(i)) {
+                    result++;
+                    break;
+                }
+                prev = s.charAt(i);
+            }
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 961)
+    public int repeatedNTimes(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            if (map.get(num) == nums.length / 2) return num;
+        }
+
+        return 0;
+    }
+
+    @LeetCodeProblem(id = 976)
+    public int largestPerimeter(int[] nums) {
+        Arrays.sort(nums);
+
+        for(int i = nums.length-1; i > 1; i--){
+            if(nums[i] < nums[i-1] + nums[i-2])
+                return  nums[i] + nums[i-1]+ nums[i-2];
+        }
+
+        return 0;
+    }
+
+    @LeetCodeProblem(id = 1025)
+    public boolean divisorGame(int n) {
+        return n % 2 == 0;
+    }
+
+    @LeetCodeProblem(id = 1318)
+    public int minFlips(int a, int b, int c) {
+        int count = 0;
+
+        for(int i = 0; i < 32; i++){
+            int aCurr = a & 1 , bCurr = b & 1 , cCurr = c & 1;
+            a = a >> 1;
+            b = b >> 1;
+            c = c >> 1;
+            if((aCurr|bCurr) != cCurr){
+                if(aCurr == 1 && bCurr == 1) count++;
+                count++;
+            }
+        }
+        return count;
+    }
 
 }
