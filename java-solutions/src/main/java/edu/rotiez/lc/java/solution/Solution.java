@@ -902,4 +902,97 @@ public class Solution {
         return count;
     }
 
+    @LeetCodeProblem(id = 349)
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set = new HashSet<>();
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        int p1 = 0, p2 = 0;
+        while (p1 < nums1.length && p2 < nums2.length) {
+            if (nums1[p1] > nums2[p2]) {
+                p2++;
+            } else if (nums1[p1] < nums2[p2]) {
+                p1++;
+            } else {
+                set.add(nums1[p1]);
+                p1++;
+                p2++;
+            }
+        }
+
+        int[] result = new int[set.size()];
+        int index = 0;
+        for (int num : set) {
+            result[index++] = num;
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 350)
+    public int[] intersect(int[] nums1, int[] nums2) {
+        List<Integer> list = new ArrayList<>();
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        int p1 = 0, p2 = 0;
+        while (p1 < nums1.length && p2 < nums2.length) {
+            if (nums1[p1] > nums2[p2]) {
+                p2++;
+            } else if (nums1[p1] < nums2[p2]) {
+                p1++;
+            } else {
+                list.add(nums1[p1]);
+                p1++;
+                p2++;
+            }
+        }
+
+        int[] result = new int[list.size()];
+        int index = 0;
+        for (int num : list) {
+            result[index++] = num;
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 383)
+    public boolean canConstruct(String ransomNote, String magazine) {
+        char[] charsA = ransomNote.toCharArray();
+        char[] charsB = magazine.toCharArray();
+        Map<Character, Integer> tempMap = new HashMap<>();
+
+        for (char b : charsB) {
+            tempMap.put(b, tempMap.getOrDefault(b, 0) + 1);
+        }
+
+        for (char a : charsA) {
+            var value = tempMap.getOrDefault(a, 0);
+            if (value > 0) {
+                tempMap.put(a, value - 1);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @LeetCodeProblem(id = 387)
+    public int firstUniqChar(String s) {
+        var arr = s.toCharArray();
+        var tempMap = new HashMap<Character, Integer>();
+
+        for (char c : arr) {
+            tempMap.put(c, tempMap.getOrDefault(c, 0) + 1);
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            if (tempMap.get(arr[i]) == 1) return i;
+        }
+
+        return -1;
+    }
+
 }
