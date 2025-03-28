@@ -995,4 +995,65 @@ public class Solution {
         return -1;
     }
 
+    @LeetCodeProblem(id = 500)
+    public String[] findWords(String[] words) {
+        String row1 = "qwertyuiop", row2 = "asdfghjkl", row3 = "zxcvbnm";
+
+        List<String> result = new ArrayList<>();
+
+        for (String word : words) {
+            String lowerWord = word.toLowerCase();
+            char firstChar = lowerWord.charAt(0);
+
+            String targetRow = "";
+            if (row1.indexOf(firstChar) != -1) targetRow = row1;
+            else if (row2.indexOf(firstChar) != -1) targetRow = row2;
+            else if (row3.indexOf(firstChar) != -1) targetRow = row3;
+
+            boolean valid = true;
+            for (char c : lowerWord.toCharArray()) {
+                if (targetRow.indexOf(c) == -1) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid) result.add(word);
+        }
+
+        return result.toArray(new String[0]);
+    }
+
+    @LeetCodeProblem(id = 506)
+    public String[] findRelativeRanks(int[] score) {
+        int[] originalScore = Arrays.copyOf(score, score.length);
+        String[] result = new String[score.length];
+        Map<Integer, String> map = new HashMap<>();
+
+        Arrays.sort(score);
+
+        int rank = 1;
+        for (int i = score.length - 1; i >= 0; i--) {
+            String medal;
+            if (rank == 1) {
+                medal = "Gold Medal";
+            } else if (rank == 2) {
+                medal = "Silver Medal";
+            } else if (rank == 3) {
+                medal = "Bronze Medal";
+            } else {
+                medal = String.valueOf(rank);
+            }
+
+            map.put(score[i], medal);
+            rank++;
+        }
+
+        for (int j = 0; j < originalScore.length; j++) {
+            result[j] = map.get(originalScore[j]);
+        }
+
+        return result;
+    }
+
 }
