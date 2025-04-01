@@ -4,7 +4,10 @@ import edu.rotiez.lc.java.structure.ListNode;
 import edu.rotiez.lc.java.structure.TreeNode;
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -1054,6 +1057,85 @@ public class Solution {
         }
 
         return result;
+    }
+
+    @LeetCodeProblem(id = 812)
+    public double largestTriangleArea(int[][] points) {
+        double maxArea = 0;
+        int n = points.length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    double area = calculateTriangleArea(
+                            points[i],
+                            points[j],
+                            points[k]
+                    );
+                    maxArea = Math.max(maxArea, area);
+                }
+            }
+        }
+        return maxArea;
+    }
+
+    private double calculateTriangleArea(int[] A, int[] B, int[] C) {
+        return 0.5 * Math.abs(
+                (B[0] - A[0]) * (C[1] - A[1]) -
+                        (C[0] - A[0]) * (B[1] - A[1])
+        );
+    }
+
+    @LeetCodeProblem(id = 824)
+    public String toGoatLatin(String sentence) {
+        String[] words = sentence.split(" ");
+        StringBuilder result = new StringBuilder();
+        var wordNum = 1;
+        var vowels = "aeiouAEIOU";
+        var ma = "ma";
+        var a = "a";
+        var space = ' ';
+
+        for (String word : words) {
+            if (word.length() == 1 || vowels.indexOf(word.charAt(0)) != -1) {
+                result.append(word);
+            } else {
+                result.append(word.substring(1));
+                result.append(word.charAt(0));
+            }
+            result.append(ma);
+            result.append(a.repeat(wordNum));
+            result.append(space);
+            wordNum++;
+        }
+
+        return result.toString().trim();
+    }
+
+    @LeetCodeProblem(id = 1122)
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        int length = 0;
+        for (int j : arr1) length = Math.max(length, j);
+        int[] count = new int[length+1];
+        for (int j : arr1) count[j]++;
+
+        int[] ans = new int[arr1.length];
+        int index = 0;
+        for (int j : arr2) {
+            while (count[j] > 0) {
+                ans[index] = j;
+                index++;
+                count[j]--;
+            }
+        }
+        for(int i = 0; i < count.length; i++){
+            while(count[i]>0){
+                ans[index] = i;
+                index++;
+                count[i]--;
+            }
+        }
+        return ans;
     }
 
 }
