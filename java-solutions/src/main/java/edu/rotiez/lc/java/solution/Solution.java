@@ -4,6 +4,7 @@ import edu.rotiez.lc.java.structure.ListNode;
 import edu.rotiez.lc.java.structure.TreeNode;
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
+import kotlin.collections.EmptyList;
 
 import java.awt.*;
 import java.util.*;
@@ -1136,6 +1137,59 @@ public class Solution {
             }
         }
         return ans;
+    }
+
+    @LeetCodeProblem(id = 884)
+    public String[] uncommonFromSentences(String s1, String s2) {
+        Map<String, Integer> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+
+        var words1 = s1.trim().split(" ");
+        var words2 = s2.trim().split(" ");
+        for (String word : words1) map.put(word, map.getOrDefault(word, 0) + 1);
+        for (String word : words2) map.put(word, map.getOrDefault(word, 0) + 1);
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) list.add(entry.getKey());
+        }
+
+        String[] result = new String[list.size()];
+        list.toArray(result);
+        return result;
+    }
+
+    @LeetCodeProblem(id = 908)
+    public int smallestRangeI(int[] nums, int k) {
+        int max = nums[0];
+        int min = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < min) {
+                min = nums[i];
+            } else if (nums[i] > max) {
+                max = nums[i];
+            }
+        }
+        return Math.max((max - k) - (min + k), 0);
+    }
+
+    @LeetCodeProblem(id = 942)
+    public int[] diStringMatch(String s) {
+        int[] result = new int[s.length() + 1];
+        int left = 0, right = s.length();
+        int idx = 0;
+
+        for (char c : s.toCharArray()) {
+            if (c == 'I') {
+                result[idx] = left;
+                left++;
+            } else {
+                result[idx] = right;
+                right--;
+            }
+            idx++;
+        }
+        result[idx] = left;
+        return result;
     }
 
 }
