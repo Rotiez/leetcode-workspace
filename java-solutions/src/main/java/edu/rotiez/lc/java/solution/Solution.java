@@ -4,11 +4,8 @@ import edu.rotiez.lc.java.structure.ListNode;
 import edu.rotiez.lc.java.structure.TreeNode;
 import edu.rotiez.lc.tools.annotation.LeetCodeProblem;
 import edu.rotiez.lc.tools.annotation.LeetCodeSolutions;
-import kotlin.collections.EmptyList;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -1189,6 +1186,47 @@ public class Solution {
             idx++;
         }
         result[idx] = left;
+        return result;
+    }
+
+    @LeetCodeProblem(id = 1863)
+    public int subsetXORSum(int[] nums) {
+        int n = nums.length;
+        int total = 0;
+
+        for (int mask = 0; mask < (1 << n); mask++) {
+            int xor = 0;
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) != 0) {
+                    xor ^= nums[i];
+                }
+            }
+            total += xor;
+        }
+
+        return total;
+    }
+
+    @LeetCodeProblem(id = 1268)
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        List<List<String>> result = new ArrayList<>();
+
+        Arrays.sort(products);
+
+        String prefix = "";
+        for (char c : searchWord.toCharArray()) {
+            prefix += c;
+
+            List<String> suggestions = new ArrayList<>();
+
+            for (String product : products) {
+                if (product.startsWith(prefix)) suggestions.add(product);
+                if (suggestions.size() == 3) break;
+            }
+
+            result.add(suggestions);
+        }
+
         return result;
     }
 
