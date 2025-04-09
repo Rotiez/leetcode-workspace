@@ -1230,4 +1230,99 @@ public class Solution {
         return result;
     }
 
+    @LeetCodeProblem(id = 1436)
+    public String destCity(List<List<String>> paths) {
+        Set<String> departures = new HashSet<>();
+
+        for (List<String> path : paths) {
+            var from  = path.get(0);
+            departures.add(from);
+        }
+
+        for (List<String> path : paths) {
+            var to = path.get(1);
+            if (!departures.contains(to)) {
+                return to;
+            }
+        }
+
+        return "";
+    }
+
+    @LeetCodeProblem(id = 1450)
+    public int busyStudent(int[] startTime, int[] endTime, int queryTime) {
+        int result = 0;
+        int i = 0;
+
+        while (i < startTime.length && i < endTime.length) {
+            if (startTime[i] <= queryTime && endTime[i] >= queryTime) result++;
+            i++;
+        }
+
+        return result;
+    }
+
+    @LeetCodeProblem(id = 3375)
+    public int minOperations(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+            if (num < k) return -1;
+            else if (num > k) set.add(num);
+        }
+
+        return set.size();
+    }
+
+    @LeetCodeProblem(id = 1455)
+    public int isPrefixOfWord(String sentence, String searchWord) {
+        var words = sentence.trim().split(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].startsWith(searchWord)) return i+1;
+        }
+
+        return -1;
+    }
+
+    @LeetCodeProblem(id = 1460)
+    public boolean canBeEqual(int[] target, int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+            map.put(target[i], map.getOrDefault(target[i], 0) - 1);
+        }
+        for (int i : map.keySet()) {
+            if (map.get(i) != 0) return false;
+        }
+        return true;
+    }
+
+    @LeetCodeProblem(id = 1464)
+    public int maxProduct(int[] nums) {
+        int max1 = Integer.MIN_VALUE, max2 = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            if (num > max1) {
+                max2 = max1;
+                max1 = num;
+            } else if (num > max2) {
+                max2 = num;
+            }
+        }
+
+        return (max1 - 1) * (max2 - 1);
+    }
+
+    @LeetCodeProblem(id = 1470)
+    public int[] shuffle(int[] nums, int n) {
+        int[] result = new int[nums.length];
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            result[idx] = nums[i];
+            result[idx + 1] = nums[i + n];
+            idx += 2;
+        }
+        return result;
+    }
+
 }
