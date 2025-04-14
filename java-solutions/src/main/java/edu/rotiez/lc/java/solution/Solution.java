@@ -1375,4 +1375,35 @@ public class Solution {
         return counter;
     }
 
+    @LeetCodeProblem(id = 110)
+    public boolean isBalanced(TreeNode root) {
+        return isBalancedDfs(root) != -1;
+    }
+
+    public int isBalancedDfs(TreeNode node) {
+        if (node == null) return 0;
+
+        int leftHeight = isBalancedDfs(node.left);
+        if (leftHeight == -1) return -1;
+
+        int rightHeight = isBalancedDfs(node.right);
+        if (rightHeight == -1) return -1;
+
+        if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    @LeetCodeProblem(id = 1518)
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int totalBottles = numBottles;
+
+        while (numBottles >= numExchange) {
+            totalBottles += numBottles / numExchange;
+            numBottles = (numBottles / numExchange) + (numBottles % numExchange);
+        }
+
+        return totalBottles;
+    }
+
 }
