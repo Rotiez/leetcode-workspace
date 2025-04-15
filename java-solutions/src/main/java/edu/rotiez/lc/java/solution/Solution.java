@@ -42,17 +42,17 @@ public class Solution {
 
     @LeetCodeProblem(id = 1)
     public int[] twoSum(int[] nums, int target) {
-        int[] arr = new int[2];
-        for (int i =0; i < nums.length; i++) {
-            for (int j =i+1; j < nums.length; j++) {
-                if ((nums[i] + nums[j] == target)) {
-                    arr[0] = i;
-                    arr[1] = j;
-                    return arr;
-                }
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (map.containsKey(target - num)) {
+                return new int[]{map.get(target - num), i};
+            } else {
+                map.put(num, i);
             }
         }
-        return arr;
+        return new int[] {};
     }
 
     @LeetCodeProblem(id = 2390)
@@ -1404,6 +1404,48 @@ public class Solution {
         }
 
         return totalBottles;
+    }
+
+    @LeetCodeProblem(id = 1480)
+    public int[] runningSum(int[] nums) {
+        int increment = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int temp = increment;
+            increment += nums[i];
+            nums[i] += temp;
+        }
+        return nums;
+    }
+
+    @LeetCodeProblem(id = 1491)
+    public double average(int[] salary) {
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        int salarySum = 0;
+
+        for (int sal : salary) {
+            if (sal > max) max = sal;
+            if (sal < min) min = sal;
+            salarySum += sal;
+        }
+
+        return (double) (salarySum - (max + min)) / (salary.length - 2);
+    }
+
+    @LeetCodeProblem(id = 1528)
+    public String restoreString(String s, int[] indices) {
+        char[] result = new char[indices.length];
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            result[indices[i]] = arr[i];
+        }
+        return new String(result);
+    }
+
+    @LeetCodeProblem(id = 1523)
+    public int countOdds(int low, int high) {
+        int diff = high - low + 1;
+        if (low % 2 != 0 && high % 2 != 0) return diff / 2 + 1;
+        else return diff / 2;
     }
 
 }
