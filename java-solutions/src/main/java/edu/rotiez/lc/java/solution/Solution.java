@@ -1480,4 +1480,50 @@ public class Solution {
         return counter;
     }
 
+    @LeetCodeProblem(id = 38)
+    public String countAndSay(int n) {
+        if (n == 1) return "1";
+
+        String prev = countAndSay(n - 1);
+        StringBuilder res = new StringBuilder();
+
+        int i = 0;
+        while (i < prev.length()) {
+            int count = 1;
+            while (i + 1 < prev.length() && prev.charAt(i) == prev.charAt(i + 1)) {
+                i++;
+                count++;
+            }
+            res.append(count).append(prev.charAt(i));
+            i++;
+        }
+
+        return res.toString();
+    }
+
+    @LeetCodeProblem(id = 1859)
+    public String sortSentence(String s) {
+        String[] words = s.split(" ");
+        StringBuilder res = new StringBuilder();
+        Arrays.sort(words, Comparator.comparingInt((word -> (int) word.charAt(word.length() - 1))));
+        for (String word : words) {
+            res.append(word, 0, word.length() - 1).append(" ");
+        }
+        return res.toString().trim();
+    }
+
+    @LeetCodeProblem(id = 1844)
+    public String replaceDigits(String s) {
+        char[] arr =s.toCharArray();
+        for(int i = 1; i < s.length(); i++)
+        {
+            if(i % 2 != 0)
+            {
+                int shift = arr[i] - '0';
+                arr[i] = (char) ((arr[i-1] + shift - 'a') % 26 + 'a');
+            }
+        }
+        return new String(arr);
+    }
+
 }
