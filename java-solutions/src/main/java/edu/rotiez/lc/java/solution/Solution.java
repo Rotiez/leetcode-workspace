@@ -1526,4 +1526,33 @@ public class Solution {
         return new String(arr);
     }
 
+    long countAtLeast(int[] nums, long comp) {
+        long ans = 0; int i = 0, j = nums.length - 1;
+        while (i < j) {
+            if (nums[i] + nums[j] >= comp) {
+                ans += j - i;
+                j--;
+            }
+            else i++;
+        }
+        return ans;
+    }
+
+    @LeetCodeProblem(id = 2563)
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        Arrays.sort(nums);
+        return countAtLeast(nums, lower) - countAtLeast(nums, upper+1);
+    }
+
+    @LeetCodeProblem(id = 2145)
+    public int numberOfArrays(int[] differences, int lower, int upper) {
+        long sum = 0, maxi = 0, mini = 0;
+        for (int x : differences) {
+            sum += x;
+            maxi = Math.max(maxi, sum);
+            mini = Math.min(mini, sum);
+        }
+        return (int)Math.max(0, upper - lower - maxi + mini + 1);
+    }
+
 }
