@@ -1555,4 +1555,30 @@ public class Solution {
         return (int)Math.max(0, upper - lower - maxi + mini + 1);
     }
 
+    @LeetCodeProblem(id = 2799)
+    public int countCompleteSubarrays(int[] nums) {
+        Set<Integer> unique = new HashSet<>();
+        for (int num : nums) unique.add(num);
+        int required = unique.size();
+
+        Map<Integer, Integer> window = new HashMap<>();
+        int left = 0, count = 0, result = 0;
+
+        for (int num : nums) {
+            window.put(num, window.getOrDefault(num, 0) + 1);
+            if (window.get(num) == 1) count++;
+
+            while (count == required) {
+                window.put(nums[left], window.get(nums[left]) - 1);
+                if (window.get(nums[left]) == 0) {
+                    window.remove(nums[left]);
+                    count--;
+                }
+                left++;
+            }
+            result += left;
+        }
+        return result;
+    }
+
 }
