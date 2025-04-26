@@ -1581,4 +1581,25 @@ public class Solution {
         return result;
     }
 
+    @LeetCodeProblem(id = 2873)
+    public long maximumTripletValue(int[] nums) {
+        long maxTriplet = 0, maxElement = 0, maxDiff = 0;
+        for (int num : nums) {
+            maxTriplet = Math.max(maxTriplet, maxDiff * num);
+            maxDiff = Math.max(maxDiff, maxElement - num);
+            maxElement = Math.max(maxElement, num);
+        }
+        return maxTriplet;
+    }
+
+    @LeetCodeProblem(id = 3396)
+    public int minimumOperations(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (!map.containsKey(nums[i])) map.put(nums[i], 1);
+            else return (i + 3) / 3;
+        }
+        return 0;
+    }
+
 }
