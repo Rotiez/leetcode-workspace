@@ -1602,4 +1602,43 @@ public class Solution {
         return 0;
     }
 
+    @LeetCodeProblem(id = 1945)
+    public int getLucky(String s, int k) {
+        int sum = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int num = Character.getNumericValue(s.charAt(i)) - 9;
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+        }
+        for (int i = 1; i < k; i++) {
+            int tempSum = 0;
+            while (sum > 0) {
+                tempSum += sum % 10;
+                sum /= 10;
+            }
+            sum = tempSum;
+        }
+        return sum;
+    }
+
+    @LeetCodeProblem(id = 1967)
+    public int numOfStrings(String[] patterns, String word) {
+        int counter = 0;
+        for (String p : patterns) {
+            if (word.contains(p)) counter++;
+        }
+        return counter;
+    }
+
+    @LeetCodeProblem(id = 3392)
+    public int countSubarrays(int[] nums) {
+        int counter = 0;
+        for (int i = 0; i + 2 < nums.length; i++) {
+            if ((nums[i] + nums[i + 2]) * 2 == nums[i + 1]) counter++;
+        }
+        return counter;
+    }
+
 }
