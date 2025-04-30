@@ -1679,4 +1679,67 @@ public class Solution {
         return result;
     }
 
+    @LeetCodeProblem(id = 836)
+    public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+        return !(
+            rec1[2] <= rec2[0] ||
+            rec1[0] >= rec2[2] ||
+            rec1[3] <= rec2[1] ||
+            rec1[1] >= rec2[3]
+        );
+    }
+
+    @LeetCodeProblem(id = 1295)
+    public int findNumbers(int[] nums) {
+        int count = 0;
+        for (int num : nums) {
+            int digits = 0;
+            while (num > 0) {
+                num /= 10;
+                digits++;
+            }
+            if (digits % 2 == 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @LeetCodeProblem(id = 819)
+    public String mostCommonWord(String paragraph, String[] banned) {
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> ban = new HashSet<>();
+
+        for (String bannedWord : banned) {
+            ban.add(bannedWord.toLowerCase());
+        }
+
+        for (String word : paragraph.replaceAll("[^a-zA-Z]", " ").toLowerCase().split("\\s+")) {
+            if (!word.isEmpty() && !ban.contains(word)) {
+                map.put(word, map.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        return map.entrySet()
+            .stream()
+            .max(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey)
+            .orElse(null);
+    }
+
+    @LeetCodeProblem(id = 1200)
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        Arrays.sort(arr);
+        List<List<Integer>> result = new ArrayList<>();
+        int minDiff = Integer.MAX_VALUE;
+        for (int i = 1; i < arr.length; i++) {
+            minDiff = Math.min(minDiff, arr[i] - arr[i - 1]);
+        }
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] - arr[i - 1] == minDiff) {
+                result.add(Arrays.asList(arr[i - 1], arr[i]));
+            }
+        }
+        return result;
+    }
 }
