@@ -1785,4 +1785,65 @@ public class Solution {
 
         return count;
     }
+
+    @LeetCodeProblem(id = 804)
+    public int uniqueMorseRepresentations(String[] words) {
+        String[] morze = { ".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.." };
+        Set<String> wordSet = new HashSet<>();
+
+        for (String word : words) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < word.length(); i++) {
+                int idx = Character.getNumericValue(word.charAt(i)) - 10;
+                sb.append(morze[idx]);
+            }
+            wordSet.add(sb.toString());
+        }
+
+        return wordSet.size();
+    }
+
+    @LeetCodeProblem(id = 806)
+    public int[] numberOfLines(int[] widths, String s) {
+        int sum = 0, row = 1;
+        for (char c : s.toCharArray()) {
+            int charWidth = widths[Character.getNumericValue(c) - 10];
+            if (sum + charWidth > 100) {
+                row++;
+                sum = charWidth;
+            } else {
+                sum += charWidth;
+            }
+        }
+        return new int[] { row, sum };
+    }
+
+    @LeetCodeProblem(id = 860)
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0, ten = 0, twenty = 0;
+        for (int bill : bills) {
+            switch (bill) {
+                case 5:
+                    five++;
+                    break;
+                case 10:
+                    if (five > 0) {
+                        five--;
+                        ten++;
+                    } else return false;
+                    break;
+                default:
+                    if (ten > 0 && five > 0) {
+                        ten--;
+                        five--;
+                        twenty++;
+                    } else if (five >= 3) {
+                        five -= 3;
+                        twenty++;
+                    } else return false;
+                    break;
+            }
+        }
+        return true;
+    }
 }
